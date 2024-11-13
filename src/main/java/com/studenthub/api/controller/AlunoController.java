@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -27,8 +28,11 @@ public class AlunoController {
 
     @GetMapping("get/{id}")
     public ResponseEntity BuscarDadosPorID(@PathVariable UUID id){
-        var getId = repository.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(getId);
+        Optional<Aluno> exists = repository.findById(id);
+        if(exists.isPresent()){
+            return ResponseEntity.status(HttpStatus.OK).body(id);
+        } else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
     }
 
     @PostMapping("new")
@@ -36,6 +40,31 @@ public class AlunoController {
         Aluno newAluno = new Aluno(dados);
         repository.save(newAluno);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("update/{id}")
+    public ResponseEntity AtlzDadosPorId(@PathVariable @Valid UUID id, @RequestBody @Valid AlunoDTO dados){
+        Optional<Aluno> exists = repository.findById(id);
+        if(exists.isPresent()){
+            Aluno atualizarCredencial = exists.get();
+            atualizarCredencial.setNome(dados.nome());
+            atualizarCredencial.setEmail(dados.email());
+            atualizarCredencial.setMatricula((dados.matricula()));
+            atualizarCredencial.setTelefone(dados.telefone());
+            atualizarCredencial.setResponsavel(dados.responsavel());
+            repository.save(atualizarCredencial);
+
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public  ResponseEntity DeletarAlunoPorID(@PathVariable @Valid UUID id){
+        Optional<Aluno> exists = repository.findById(id);
+        if(exists.isPresent()){
+            repository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
 }
