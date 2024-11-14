@@ -16,17 +16,19 @@ public class Aluno {
     private String telefone;
     private int matricula;
     private String responsavel;
+    private String ImagURL;
 
     public Aluno() {
     }
 
-    public Aluno(UUID id, String nome, String email, String telefone, int matricula, String responsavel) {
+    public Aluno(UUID id, String nome, String email, String telefone, int matricula, String responsavel, String ImagURL) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
         this.matricula = matricula;
         this.responsavel = responsavel;
+        this.ImagURL= ImagURL;
     }
 
     public Aluno(AlunoDTO dto){
@@ -83,5 +85,13 @@ public class Aluno {
 
     public void setResponsavel(String responsavel) {
         this.responsavel = responsavel;
+    }
+
+    public String getImagURL() {
+        return ImagURL;
+    }
+
+    public void setImagURL(String imagURL) {
+        ImagURL = imagURL;
     }
 }
