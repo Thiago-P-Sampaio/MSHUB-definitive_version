@@ -3,13 +3,19 @@ package com.studenthub.api.domain;
 import com.studenthub.api.dto.AlunoDTO;
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 @Entity
 @Table (name="aluno")
 public class Aluno {
 
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String nome;
     private String email;
@@ -17,26 +23,40 @@ public class Aluno {
     private int matricula;
     private String responsavel;
     private String ImagURL;
+    @Column(name = "timestamp_register",columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    private OffsetDateTime dateTime;
+
 
     public Aluno() {
     }
 
-    public Aluno(UUID id, String nome, String email, String telefone, int matricula, String responsavel, String ImagURL) {
-        this.id = id;
+
+
+    public Aluno(UUID id, String nome, String email, String telefone, int matricula, String responsavel, String ImagURL
+               ) {
+       this.id = id;
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
         this.matricula = matricula;
         this.responsavel = responsavel;
-        this.ImagURL= ImagURL;
+        this.ImagURL = ImagURL;
+
     }
 
-    public Aluno(AlunoDTO dto){
-        this.nome= dto.nome();
-        this.email=dto.email();
-        this.telefone= dto.telefone();
-        this.matricula= dto.matricula();
-        this.responsavel= dto.responsavel();
+    public Aluno(AlunoDTO dto) {
+        this.nome = dto.nome();
+        this.email = dto.email();
+        this.telefone = dto.telefone();
+        this.matricula = dto.matricula();
+        this.responsavel = dto.responsavel();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (this.dateTime == null) {
+            this.dateTime = OffsetDateTime.now(ZoneOffset.of("-03:00"));
+        }
     }
 
     public UUID getId() {
@@ -94,4 +114,13 @@ public class Aluno {
     public void setImagURL(String imagURL) {
         ImagURL = imagURL;
     }
+
+    public OffsetDateTime getDateTime() {
+        return dateTime;
+    }
+
+
+
+
+
 }

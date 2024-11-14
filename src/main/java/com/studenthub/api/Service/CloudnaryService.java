@@ -20,6 +20,7 @@ public class CloudnaryService {
         this.cloudinary = cloudinary;
     }
 
+
     public Map uploadImage(MultipartFile file) throws IOException {
         // Converte MultipartFile para File
         File tempFile = File.createTempFile("upload", file.getOriginalFilename());

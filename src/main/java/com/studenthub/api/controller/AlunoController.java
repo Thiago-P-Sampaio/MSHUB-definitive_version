@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,7 +42,9 @@ public class AlunoController {
     public ResponseEntity CadastrarAluno(@RequestBody @Valid AlunoDTO dados){
         Aluno newAluno = new Aluno(dados);
         repository.save(newAluno);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Hora:" + newAluno.getDateTime());
     }
 
     @PutMapping("update/{id}")
