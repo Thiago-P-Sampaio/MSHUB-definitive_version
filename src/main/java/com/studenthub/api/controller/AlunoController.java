@@ -33,7 +33,7 @@ public class AlunoController {
     public ResponseEntity BuscarDadosPorID(@PathVariable UUID id){
         Optional<Aluno> exists = repository.findById(id);
         if(exists.isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(id);
+            return ResponseEntity.status(HttpStatus.OK).body(exists);
         } else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
     }
