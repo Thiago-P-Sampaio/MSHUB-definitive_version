@@ -14,6 +14,6 @@ import java.util.UUID;
 @Repository
 public interface AlunoRepository extends JpaRepository<Aluno, UUID> {
 
-    @Query(value = "SELECT * FROM aluno ORDER BY id DESC LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM aluno ORDER BY timestamp_register DESC LIMIT 1;", nativeQuery = true)
     Aluno findLastStudent();
 }
