@@ -18,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/mshub")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class AlunoController {
 
     @Autowired
