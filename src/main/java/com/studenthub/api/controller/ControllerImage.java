@@ -27,16 +27,26 @@ public class ControllerImage {
 
 
     @PostMapping("/upload")
-    public ResponseEntity<Map> uploadImage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Map<String, Object>> uploadImage(
+            @RequestParam("file") MultipartFile file) {
         try {
-            Map uploadResult = imageService.uploadImage(file);
-            String imageUrl = (String) uploadResult.get("url"); // Obtendo a URL da imagem
-            Aluno exists = repository.findLastStudent();
-            exists.getClass();
-            exists.setImagURL(imageUrl);
-            repository.save(exists);
+            // Chama o serviço para fazer o upload da imagem
+            Map<String, Object> uploadResult = imageService.uploadImage(file);
 
-            return ResponseEntity.ok(Map.of("url", imageUrl)); // Retornando a URL em um mapa
+            // Obtendo a URL da imagem
+            String imageUrl = (String) uploadResult.get("url");
+
+            // Atualiza a URL da imagem no objeto Aluno
+            Aluno exists = repository.findLastStudent();
+            if (exists != null) {
+                exists.setImagURL(imageUrl);
+                repository.save(exists);
+            } else {
+                return ResponseEntity.status(404).body(Map.of("error", "Aluno não encontrado"));
+            }
+
+            // Retornando a URL em um mapa
+            return ResponseEntity.ok(Map.of("url", imageUrl));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("error", "Upload failed: " + e.getMessage()));
         }
