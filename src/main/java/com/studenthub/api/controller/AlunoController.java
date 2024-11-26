@@ -55,12 +55,27 @@ public class AlunoController {
         Optional<Aluno> exists = repository.findById(id);
         if(exists.isPresent()){
             Aluno atualizarCredencial = exists.get();
-            atualizarCredencial.setNome(dados.nome());
-            atualizarCredencial.setEmail(dados.email());
-            atualizarCredencial.setMatricula((dados.matricula()));
-            atualizarCredencial.setTelefone(dados.telefone());
-            atualizarCredencial.setResponsavel(dados.responsavel());
-            repository.save(atualizarCredencial);
+            if(dados.nome() != null){
+                atualizarCredencial.setNome(dados.nome());
+                repository.save(atualizarCredencial);
+            }
+            if(dados.email() != null){
+                atualizarCredencial.setEmail(dados.email());
+                repository.save(atualizarCredencial);
+            }
+            if(dados.matricula() != 0){
+                atualizarCredencial.setMatricula((dados.matricula()));
+                repository.save(atualizarCredencial);
+            }
+            if(dados.telefone() != null){
+                atualizarCredencial.setTelefone(dados.telefone());
+                repository.save(atualizarCredencial);
+            }
+            if(dados.responsavel() != null) {
+                atualizarCredencial.setResponsavel(dados.responsavel());
+                repository.save(atualizarCredencial);
+            }
+
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
