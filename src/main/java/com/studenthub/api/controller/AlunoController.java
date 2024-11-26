@@ -1,28 +1,32 @@
 package com.studenthub.api.controller;
 
+import com.studenthub.api.Service.CloudnaryService;
 import com.studenthub.api.domain.Aluno;
 import com.studenthub.api.dto.AlunoDTO;
 import com.studenthub.api.repository.AlunoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/mshub")
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*")
 public class AlunoController {
 
     @Autowired
     AlunoRepository repository;
+
+    @Autowired
+    CloudnaryService imageService;
 
     @GetMapping("get")
     public ResponseEntity BuscarDados(){
@@ -39,13 +43,11 @@ public class AlunoController {
 
     }
 
-    @PostMapping("new")
-    public ResponseEntity CadastrarAluno(@RequestBody @Valid AlunoDTO dados){
+    @PostMapping(value = "new")
+    public  ResponseEntity CadastrarAluno(@RequestBody @Valid AlunoDTO dados){
         Aluno newAluno = new Aluno(dados);
         repository.save(newAluno);
-
-
-        return ResponseEntity.status(HttpStatus.CREATED).body("Hora:" + newAluno.getDateTime());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("update/{id}")
@@ -72,5 +74,8 @@ public class AlunoController {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+
+
+
 
 }

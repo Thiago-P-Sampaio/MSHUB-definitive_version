@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("image")
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*")
 public class ControllerImage {
 
     @Autowired
