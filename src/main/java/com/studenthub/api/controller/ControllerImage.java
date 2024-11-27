@@ -53,18 +53,33 @@ public class ControllerImage {
 
 
     }
+
+
+
     @PutMapping("updt/{id}")
     public ResponseEntity<Map<String, Object>> updtImage(@PathVariable UUID id, @RequestParam("file") MultipartFile file) {
         Optional<Aluno> find = repository.findById(id);
 
-        try {
-            if (find.isPresent()) {
-                Aluno atlzImage = find.get();
-                String URLdoAluno = atlzImage.getImagURL();
+        if (find.isPresent()) {
+            Aluno atlzImage = find.get();
+            String urlAluno = atlzImage.getImagURL();
 
-                // Tentando excluir a imagem antiga do Cloudinary
-                String deleteImg = imageService.DeleteImag(URLdoAluno);
+            // Verifica se a URL da imagem antiga não é nula ou vazia
+            if (urlAluno != null && !urlAluno.isEmpty()) {
+                try {
+                    // Tentando excluir a imagem antiga do Cloudinary
+                    String deleteSuccess = imageService.deleteImageByUrl(urlAluno);
 
+                    // Aqui você pode verificar o resultado da exclusão
+                    if (!"ok".equals(deleteSuccess)) {
+                        return ResponseEntity.status(500).body(Map.of("error", "Failed to delete old image: " + deleteSuccess));
+                    }
+                } catch (Exception e) {
+                    return ResponseEntity.status(500).body(Map.of("error", "Error deleting old image: " + e.getMessage()));
+                }
+            }
+
+            try {
                 // Faremos a mudança de imagem após o upload
                 Map<String, Object> uploadResult = imageService.uploadImage(file);
                 String imageUrl = (String) uploadResult.get("url");
@@ -75,17 +90,16 @@ public class ControllerImage {
 
                 // Retornamos a URL da nova imagem
                 return ResponseEntity.ok(Map.of("url", imageUrl));
-            } else {
-                // Caso o aluno não seja encontrado
-                return ResponseEntity.status(404).body(Map.of("error", "Aluno não encontrado"));
+            } catch (Exception e) {
+                // Em caso de erro no upload, podemos restaurar a imagem antiga se necessário
+                return ResponseEntity.status(500).body(Map.of("error", "Upload failed: " + e.getMessage()));
             }
-
-        } catch (Exception e) {
-            // Em caso de erro, podemos restaurar a imagem antiga ou retornar uma mensagem de erro
-            // Nesse caso, preferimos não excluir a imagem anterior se ocorrer um erro no upload
-            return ResponseEntity.status(500).body(Map.of("error", "Upload failed: " + e.getMessage()));
+        } else {
+            // Caso o aluno não seja encontrado
+            return ResponseEntity.status(404).body(Map.of("error", "Aluno não encontrado"));
         }
+
     }
-
-
 }
+
+

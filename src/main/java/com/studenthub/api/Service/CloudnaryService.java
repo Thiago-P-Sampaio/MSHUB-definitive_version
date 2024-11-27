@@ -1,14 +1,12 @@
 package com.studenthub.api.Service;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.api.ApiResponse;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,23 +38,56 @@ public class CloudnaryService {
 
     }
 
-    public String DeleteImag(String imageUrl) {
+    // Método para excluir a imagem pelo public ID
+    public String deleteImageByUrl(String imageUrl) {
         try {
-            // Extraindo o public_id da URL
-            String publicId = imageUrl.split("/image/upload/")[1].split("\\?")[0].split("\\.")[0]; // Obtém o public_id
+            // Extrai o public ID completo, incluindo o caminho da pasta
+            String publicId = extractPublicId(imageUrl); // Isso retorna o publicId completo
+            Map<String, Object> deleteResult = cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
 
-            // Deletando a imagem utilizando o deleteResources
-            ApiResponse apiResponse = cloudinary.api().deleteResources(
-                    Arrays.asList(publicId),
-                    ObjectUtils.asMap("type", "upload", "resource_type", "image")
-            );
-            return "";
-
-        } catch (IOException exception) {
-            System.out.println("Erro ao excluir a imagem: " + exception.getMessage());
+            // Verifica se a exclusão foi bem-sucedida
+            String result = (String) deleteResult.get("result");
+            if ("ok".equals(result)) {
+                return result; // Retorna "ok" se a exclusão foi bem-sucedida
+            } else {
+                System.err.println("Falha ao excluir a imagem: " + deleteResult);
+                return "falha"; // Retorna "falha" se não foi bem-sucedido
+            }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.err.println("Erro ao excluir a imagem: " + e.getMessage());
+            return "erro";
         }
-    return null;
+    }
+
+    // Método para extrair o public ID da URL da imagem
+    private String extractPublicId(String imageUrl) {
+        // Certifique-se de que a URL não esteja vazia ou nula
+        if (imageUrl == null || imageUrl.isEmpty()) {
+            throw new IllegalArgumentException("A URL da imagem não pode ser nula ou vazia.");
+        }
+
+        // Divide a URL para extrair o public ID
+        String[] parts = imageUrl.split("/");
+        String lastPart = parts[parts.length - 1];
+        String[] idParts = lastPart.split("\\.");
+
+        // Retorna o public ID sem a extensão do arquivo
+        return idParts[0]; // Retorna o public ID com o caminho da pasta
+    }
+
+
+    public void deleteImageByUrl(String imageUrl) {
+        // Extract public ID from URL (you may need to adjust this based on your URL structure)
+        String publicId = extractPublicIdFromUrl(imageUrl);
+
+
+
+        try {
+            // Call the destroy method
+            Map result = cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+            System.out.println(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
