@@ -43,7 +43,7 @@ public class CloudnaryService {
         try {
             // Extrai o public ID completo, incluindo o caminho da pasta
             String publicId = extractPublicIdFromUrl(imageUrl); // Isso retorna o publicId completo
-            System.out.println(publicId);
+//            System.out.println(publicId);  TESTE -> RETORNAR NA TELA(OUTPUT) O PUBLIC ID DA IMAGEM ANTIGA
             Map<String, Object> deleteResult = cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
 
             // Verifica se a exclusão foi bem-sucedida

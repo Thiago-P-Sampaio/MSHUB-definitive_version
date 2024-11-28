@@ -4,6 +4,8 @@ import com.studenthub.api.Service.CloudnaryService;
 import com.studenthub.api.domain.Aluno;
 import com.studenthub.api.repository.AlunoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +26,9 @@ public class ControllerImage {
     AlunoRepository repository;
 
 
-
+// TENTAR UNIR DEPOIS EM UM CONTROLLER SÓ
+//    COMO SÓ CONDIGO ENVIAR OU UM "JSON" OU UM "FORMDATA" NO Insomnia/Postman tenho outro endpoint para
+//     tratar minhas outras requisições
 
     @PostMapping("/upload")
     public ResponseEntity<Map<String, Object>> uploadImage(
@@ -55,6 +59,7 @@ public class ControllerImage {
     }
 
 
+// Método put feito!!
 
     @PutMapping("updt/{id}")
     public ResponseEntity<Map<String, Object>> updtImage(@PathVariable UUID id, @RequestParam("file") MultipartFile file) {
@@ -98,6 +103,27 @@ public class ControllerImage {
             // Caso o aluno não seja encontrado
             return ResponseEntity.status(404).body(Map.of("error", "Aluno não encontrado"));
         }
+
+    }
+    @DeleteMapping("del/{id}")
+    public ResponseEntity<String> deletePorIdImg(@PathVariable UUID id){
+        Optional<Aluno> exists = repository.findById(id); // puxar aluno por ID
+        try{
+            if(exists.isPresent()){ // ver se aluno tá disp.
+                Aluno deletarAlunoImg = exists.get();
+                String url = deletarAlunoImg.getImagURL();
+                String delete = imageService.deleteImageByUrl(url);
+                // tirar URL do banco
+                deletarAlunoImg.setImagURL(null); // anular campo no BD
+                repository.save(deletarAlunoImg);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Imagem Deletada");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aluno não encontrado");
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(500).body("Erro ao deletar" + e.getMessage());
+        }
+
 
     }
 }
