@@ -42,7 +42,8 @@ public class CloudnaryService {
     public String deleteImageByUrl(String imageUrl) {
         try {
             // Extrai o public ID completo, incluindo o caminho da pasta
-            String publicId = extractPublicId(imageUrl); // Isso retorna o publicId completo
+            String publicId = extractPublicIdFromUrl(imageUrl); // Isso retorna o publicId completo
+            System.out.println(publicId);
             Map<String, Object> deleteResult = cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
 
             // Verifica se a exclusão foi bem-sucedida
@@ -59,35 +60,26 @@ public class CloudnaryService {
         }
     }
 
-    // Método para extrair o public ID da URL da imagem
-    private String extractPublicId(String imageUrl) {
+    private String extractPublicIdFromUrl(String imageUrl) {
         // Certifique-se de que a URL não esteja vazia ou nula
         if (imageUrl == null || imageUrl.isEmpty()) {
             throw new IllegalArgumentException("A URL da imagem não pode ser nula ou vazia.");
         }
 
-        // Divide a URL para extrair o public ID
+        // Divide a URL para extrair o caminho completo até o ID
         String[] parts = imageUrl.split("/");
-        String lastPart = parts[parts.length - 1];
-        String[] idParts = lastPart.split("\\.");
-
-        // Retorna o public ID sem a extensão do arquivo
-        return idParts[0]; // Retorna o public ID com o caminho da pasta
-    }
-
-
-    public void deleteImageByUrl(String imageUrl) {
-        // Extract public ID from URL (you may need to adjust this based on your URL structure)
-        String publicId = extractPublicIdFromUrl(imageUrl);
-
-
-
-        try {
-            // Call the destroy method
-            Map result = cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
-            System.out.println(result);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (parts.length < 2) {
+            throw new IllegalArgumentException("URL inválida: não contém informações suficientes para extração.");
         }
+
+        // Obtém a parte da URL que inclui o caminho da pasta e o ID
+        String relevantPart = parts[parts.length - 2] + "/" + parts[parts.length - 1];
+
+        // Remove a extensão do arquivo do último segmento
+        String[] idParts = relevantPart.split("\\.");
+        return idParts[0]; // Retorna o caminho da pasta e o ID
     }
+
+
+
 }
