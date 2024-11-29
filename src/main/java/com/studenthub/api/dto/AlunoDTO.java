@@ -1,9 +1,16 @@
 package com.studenthub.api.dto;
 
-public record AlunoDTO(
-        String nome,
-        String email,
-        String telefone,
-        int matricula,
-        String responsavel) {
+import jakarta.validation.constraints.NotNull;
+
+public record AlunoDTO( // ADICIONAR ALGUMAS VALIDAÇÕES -> @Notnull
+                        @NotNull
+                        String nome,
+                        @NotNull
+                        String email,
+                        @NotNull
+                        String telefone,
+                        @NotNull
+                        int matricula,
+                        @NotNull
+                        String responsavel) {
 }

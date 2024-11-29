@@ -3,6 +3,7 @@ package com.studenthub.api.controller;
 import com.studenthub.api.Service.CloudnaryService;
 import com.studenthub.api.domain.Aluno;
 import com.studenthub.api.dto.AlunoDTO;
+import com.studenthub.api.dto.PutAlunoDTO;
 import com.studenthub.api.repository.AlunoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class AlunoController {
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity AtlzDadosPorId(@PathVariable @Valid UUID id, @RequestBody @Valid AlunoDTO dados){
+    public ResponseEntity AtlzDadosPorId(@PathVariable @Valid UUID id, @RequestBody @Valid PutAlunoDTO dados){
         Optional<Aluno> exists = repository.findById(id);
         if(exists.isPresent()){
             Aluno atualizarCredencial = exists.get();
