@@ -34,7 +34,7 @@ formulario.addEventListener("submit", async (event) => {
         console.log("Dados do aluno enviados com sucesso.");
         
         // Timer de 4 segundos
-        await new Promise((resolve) => setTimeout(resolve, 4000));
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
         // Segundo Fetch: Enviando o arquivo
         const file = Ifoto.files[0];

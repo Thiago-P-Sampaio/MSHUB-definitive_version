@@ -9,11 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,15 +36,22 @@ public class AlunoController {
         Optional<Aluno> exists = repository.findById(id);
         if(exists.isPresent()){
             return ResponseEntity.status(HttpStatus.OK).body(exists);
-        } else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @PostMapping(value = "new")
-    public  ResponseEntity CadastrarAluno(@RequestBody @Valid AlunoDTO dados){
+    public ResponseEntity CadastrarAluno(@RequestBody @Valid AlunoDTO dados){
         Aluno newAluno = new Aluno(dados);
         repository.save(newAluno);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+
+        // Retornando um Map com o status 201 (Created) e o ID do novo aluno
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of(
+                        "message", "Aluno cadastrado com sucesso!",
+                        "id", newAluno.getId()
+                ));
     }
 
     @PutMapping("update/{id}")
@@ -65,7 +68,7 @@ public class AlunoController {
                 repository.save(atualizarCredencial);
             }
             if(dados.matricula() != 0){
-                atualizarCredencial.setMatricula((dados.matricula()));
+                atualizarCredencial.setMatricula(dados.matricula());
                 repository.save(atualizarCredencial);
             }
             if(dados.telefone() != null){
@@ -77,21 +80,31 @@ public class AlunoController {
                 repository.save(atualizarCredencial);
             }
 
-
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        }else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            // Retornando status 201 e informações sobre a atualização do aluno
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Map.of(
+                            "message", "Aluno atualizado com sucesso!",
+                            "id", atualizarCredencial.getId()
+                    ));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public  ResponseEntity DeletarAlunoPorID(@PathVariable @Valid UUID id){
+    public ResponseEntity DeletarAlunoPorID(@PathVariable @Valid UUID id){
         Optional<Aluno> exists = repository.findById(id);
         if(exists.isPresent()){
             repository.deleteById(id);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        }else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+            // Retornando status 201 e mensagem de sucesso para exclusão
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Map.of(
+                            "message", "Aluno deletado com sucesso!",
+                            "id", id
+                    ));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
-
-
-
-
 }

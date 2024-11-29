@@ -3,6 +3,7 @@ package com.studenthub.api.repository;
 import com.studenthub.api.domain.Aluno;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.hibernate.annotations.processing.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
