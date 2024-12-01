@@ -30,7 +30,7 @@ public class Aluno {
     private String responsavel;
     @Column(unique = true)
     private String ImagURL;
-    @Column(name = "timestamp_register",columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "timestamp_register")
     private OffsetDateTime dateTime;
 
 
@@ -70,7 +70,7 @@ public class Aluno {
     @PrePersist
     public void prePersist() {
         if (this.dateTime == null) {
-            this.dateTime = OffsetDateTime.now(ZoneOffset.of("-03:00"));
+            this.dateTime =OffsetDateTime.now(ZoneOffset.UTC).withOffsetSameInstant(ZoneOffset.of("-03:00"));
         }
     }
 

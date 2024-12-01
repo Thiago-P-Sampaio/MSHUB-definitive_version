@@ -91,7 +91,7 @@ public class AlunoController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity DeletarAlunoPorID(@PathVariable @Valid UUID id){
         Optional<Aluno> exists = repository.findById(id);
         if(exists.isPresent()){
