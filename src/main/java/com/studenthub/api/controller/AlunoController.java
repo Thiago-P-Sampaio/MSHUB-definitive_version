@@ -6,9 +6,11 @@ import com.studenthub.api.dto.AlunoDTO;
 import com.studenthub.api.dto.PutAlunoDTO;
 import com.studenthub.api.repository.AlunoRepository;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 import java.util.Optional;
@@ -31,6 +33,12 @@ public class AlunoController {
         return ResponseEntity.status(HttpStatus.OK).body(getList);
     }
 
+    @GetMapping("get/count")
+    public ResponseEntity<Long> Quantidade(){
+        Long quant = Long.valueOf(repository.quntStudent());
+        return  ResponseEntity.ok().body(quant);
+    }
+
     @GetMapping("get/{id}")
     public ResponseEntity BuscarDadosPorID(@PathVariable UUID id){
         Optional<Aluno> exists = repository.findById(id);
@@ -42,18 +50,40 @@ public class AlunoController {
     }
 
     @PostMapping(value = "new")
-    public ResponseEntity CadastrarAluno(@RequestBody @Valid AlunoDTO dados){
-        Aluno newAluno = new Aluno(dados);
+    public ResponseEntity CadastrarAluno(
+            @RequestParam("nome") String nome,
+            @RequestParam("matricula") Integer matricula,
+            @RequestParam("telefone") String telefone,
+            @RequestParam("email") String email,
+            @RequestParam("responsavel") String responsavel,
+            @RequestParam("file")MultipartFile file
+            ) {
+        Aluno newAluno = new Aluno();
+        newAluno.setNome(nome);
+        newAluno.setMatricula(matricula);
+        newAluno.setTelefone(telefone);
+        newAluno.setEmail(email);
+        newAluno.setResponsavel(responsavel);
         repository.save(newAluno);
+        try {
+            // Chama o serviço para fazer o upload da imagem
+            Map<String, Object> uploadResult = imageService.uploadImage(file);
 
-        // Retornando um Map com o status 201 (Created) e o ID do novo aluno
+            // Obtendo a URL da imagem
+            String imageUrl = (String) uploadResult.get("url");
+            newAluno.setImagURL(imageUrl);
+            repository.save(newAluno);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", "Upload failed: " + e.getMessage()));
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of(
                         "message", "Aluno cadastrado com sucesso!",
-                        "id", newAluno.getId()
+                        "\n id", newAluno.getId(),
+                        "\n url:", newAluno.getImagURL()
                 ));
     }
-
     @PutMapping("update/{id}")
     public ResponseEntity AtlzDadosPorId(@PathVariable @Valid UUID id, @RequestBody @Valid PutAlunoDTO dados){
         Optional<Aluno> exists = repository.findById(id);

@@ -1,11 +1,23 @@
-const formulario = document.getElementById("Aluno");
+// Elementos do formulário
+const formulario = document.querySelector("#modal-register form");
 const Inome = document.getElementById("nome");
 const Irm = document.getElementById("rm");
 const Iresponsavel = document.getElementById("responsavel");
 const Iemail = document.getElementById("email");
 const Itelefone = document.getElementById("telefone");
-const Ifoto = document.getElementById("foto");
+const Ifoto = document.getElementById("imagem");
 
+// Função para limpar os campos do formulário
+const clearFormFields = () => {
+    Inome.value = "";
+    Irm.value = "";
+    Iresponsavel.value = "";
+    Iemail.value = "";
+    Itelefone.value = "";
+    Ifoto.value = "";
+};
+
+// Adiciona evento de submit no formulário
 formulario.addEventListener("submit", async (event) => {
     event.preventDefault(); // Impede o envio padrão do formulário
 
@@ -19,7 +31,7 @@ formulario.addEventListener("submit", async (event) => {
             telefone: Itelefone.value
         };
 
-        const response1 = await fetch("http://localhost:8080/mshub/new", {
+        const response1 = await fetch("https://apiteste01.azurewebsites.net/mshub/new", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -32,17 +44,17 @@ formulario.addEventListener("submit", async (event) => {
         }
 
         console.log("Dados do aluno enviados com sucesso.");
-        
-        // Timer de 4 segundos
+
+        // Timer de 4 segundos para evitar conflitos de timing
         await new Promise((resolve) => setTimeout(resolve, 500));
 
-        // Segundo Fetch: Enviando o arquivo
+        // Segundo Fetch: Enviando a imagem
         const file = Ifoto.files[0];
         if (file) {
             const formData = new FormData();
             formData.append("file", file);
 
-            const response2 = await fetch("http://localhost:8080/image/upload", {
+            const response2 = await fetch("https://apiteste01.azurewebsites.net/image/upload", {
                 method: "POST",
                 body: formData
             });
@@ -56,16 +68,16 @@ formulario.addEventListener("submit", async (event) => {
         } else {
             console.warn("Nenhuma imagem foi selecionada para upload.");
         }
+
+        alert("Aluno cadastrado com sucesso!");
     } catch (error) {
         console.error("Erro:", error.message);
+        alert("Erro ao cadastrar aluno. Por favor, tente novamente.");
     } finally {
         // Limpar os campos do formulário
-        Inome.value = "";
-        Irm.value = "";
-        Iresponsavel.value = "";
-        Iemail.value = "";
-        Itelefone.value = "";
-        Ifoto.value = "";
+        clearFormFields();
+        // Fechar o modal
+        modalRegister.close();
+        window.location.reload(); // Atualiza a página
     }
-
 });

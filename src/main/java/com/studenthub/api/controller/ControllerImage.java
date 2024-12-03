@@ -30,33 +30,33 @@ public class ControllerImage {
 //    COMO SÓ CONDIGO ENVIAR OU UM "JSON" OU UM "FORMDATA" NO Insomnia/Postman tenho outro endpoint para
 //     tratar minhas outras requisições
 
-    @PostMapping("/upload")
-    public ResponseEntity<Map<String, Object>> uploadImage(
-            @RequestParam("file") MultipartFile file) {
-        try {
-            // Chama o serviço para fazer o upload da imagem
-            Map<String, Object> uploadResult = imageService.uploadImage(file);
-
-            // Obtendo a URL da imagem
-            String imageUrl = (String) uploadResult.get("url");
-
-            // Atualiza a URL da imagem no objeto Aluno
-            Aluno exists = repository.findLastStudent();
-            if (exists != null) {
-                exists.setImagURL(imageUrl);
-                repository.save(exists);
-            } else {
-                return ResponseEntity.status(404).body(Map.of("error", "Aluno não encontrado"));
-            }
-
-            // Retornando a URL em um mapa
-            return ResponseEntity.ok(Map.of("url", imageUrl));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("error", "Upload failed: " + e.getMessage()));
-        }
-
-
-    }
+//    @PostMapping("/upload")
+//    public ResponseEntity<Map<String, Object>> uploadImage(
+//            @RequestParam("file") MultipartFile file) {
+//        try {
+//            // Chama o serviço para fazer o upload da imagem
+//            Map<String, Object> uploadResult = imageService.uploadImage(file);
+//
+//            // Obtendo a URL da imagem
+//            String imageUrl = (String) uploadResult.get("url");
+//
+//            // Atualiza a URL da imagem no objeto Aluno
+//            Aluno exists = repository.findLastStudent();
+//            if (exists != null) {
+//                exists.setImagURL(imageUrl);
+//                repository.save(exists);
+//            } else {
+//                return ResponseEntity.status(404).body(Map.of("error", "Aluno não encontrado"));
+//            }
+//
+//            // Retornando a URL em um mapa
+//            return ResponseEntity.ok(Map.of("url", imageUrl));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(500).body(Map.of("error", "Upload failed: " + e.getMessage()));
+//        }
+//
+//
+//    }
 
 
 // Método put feito!!
@@ -72,12 +72,14 @@ public class ControllerImage {
             // Verifica se a URL da imagem antiga não é nula ou vazia
             if (urlAluno != null && !urlAluno.isEmpty()) {
                 try {
-                    // Tentando excluir a imagem antiga do Cloudinary
-                    String deleteSuccess = imageService.deleteImageByUrl(urlAluno);
+                    if(atlzImage.getImagURL() != null) {
+                        // Tentando excluir a imagem antiga do Cloudinary
+                        String deleteSuccess = imageService.deleteImageByUrl(urlAluno);
 
-                    // Aqui você pode verificar o resultado da exclusão
-                    if (!"ok".equals(deleteSuccess)) {
-                        return ResponseEntity.status(500).body(Map.of("error", "Failed to delete old image: " + deleteSuccess));
+                        // Aqui você pode verificar o resultado da exclusão
+                        if (!"ok".equals(deleteSuccess)) {
+                            return ResponseEntity.status(500).body(Map.of("error", "Failed to delete old image: " + deleteSuccess));
+                        }
                     }
                 } catch (Exception e) {
                     return ResponseEntity.status(500).body(Map.of("error", "Error deleting old image: " + e.getMessage()));

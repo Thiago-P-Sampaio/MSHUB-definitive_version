@@ -18,4 +18,6 @@ public interface AlunoRepository extends JpaRepository<Aluno, UUID> {
     @Query(value = "SELECT * FROM aluno ORDER BY timestamp_register DESC LIMIT 1;", nativeQuery = true)
     Aluno findLastStudent();
 
+    @Query(value = "SELECT * FROM quant_alunos;", nativeQuery = true)
+    String quntStudent();
 }
