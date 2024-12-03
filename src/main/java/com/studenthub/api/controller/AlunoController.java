@@ -12,6 +12,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -47,6 +48,12 @@ public class AlunoController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    @GetMapping("get/buscar")
+    public ResponseEntity<List<Aluno>> buscarAlunoPorNome(@RequestParam String nome) {
+        List<Aluno> alunos = repository.buscarAlunoPorNome(nome);
+        return ResponseEntity.ok(alunos);
     }
 
     @PostMapping(value = "new")

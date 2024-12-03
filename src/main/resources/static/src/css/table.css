@@ -106,3 +106,90 @@
     font-size: 14px;
     margin-top: 5px;
   }
+
+
+  /* Centraliza o wrapper da busca de alunos */
+.busca-alunos-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 500px;
+  margin: 0 auto; /* Centraliza o container horizontalmente */
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para o título */
+.busca-alunos-header {
+  margin-bottom: 15px;
+}
+
+.titulo-busca {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Estilos do formulário */
+.busca-alunos-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.campo-nome {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.botao-buscar,
+.botao-resetar {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+/* Cor do botão de buscar */
+.botao-buscar {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.botao-buscar:hover {
+  background-color: #45a049;
+}
+
+/* Cor do botão de resetar */
+.botao-resetar {
+  background-color: #f44336;
+  color: white;
+}
+
+.botao-resetar:hover {
+  background-color: #da190b;
+}
+
+/* Estilos dos resultados */
+.busca-resultados {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 600px) {
+  .busca-alunos-wrapper {
+    width: 90%;
+  }
+}

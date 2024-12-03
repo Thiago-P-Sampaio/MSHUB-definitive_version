@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MySchool.com</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="src/css/style.css">
+  <link rel="icon" href="src/img/icon-default.png" type="image/x-icon">
+  
 </head>
 <body>
   <header class="header">
@@ -22,8 +24,9 @@
     <section class="container">
       <div class="title-row">
         <h2>Lista de Alunos</h2>
+        <div class="quant1"  id="quant"> </div>
         <button id="b1-newStudent" class="new-button" >
-          <img  class="img-novo" src="img/add_circle.png" alt="Novo Aluno">
+          <img  class="img-novo" src="src/img/add_circle.png" alt="Novo Aluno">
           Novo
         </button>
       </div>
@@ -153,8 +156,20 @@
 </dialog>
 
 
-  <script src="js/modal.js"></script>
-  <script src="js/fetchStudent.js"></script>
-  <script src="js/studentslist.js"></script>
+<div class="busca-alunos-wrapper">
+  <div class="busca-alunos-header">
+      <h3 class="titulo-busca">Buscar Alunos</h3>
+  </div>
+  <div class="busca-alunos-form">
+      <input type="text" class="campo-nome" id="nome-valor" placeholder="Digite o nome do aluno">
+      <button class="botao-buscar" onclick="buscarAluno()">Buscar</button>
+      <button class="botao-resetar" onclick="resetarPesquisa()">Resetar</button>
+  </div>
+  <div class="busca-resultados" id="resultados"></div>
+</div>
+
+  <script src="src/js/studentslist.js"></script>
+  <script src="src/js/modal.js"></script>
+  <script src="src/js/fetchStudent.js"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
     /* Detalhes do Aluno */
     .student-details {
+      font-family: "inter, bold";
         max-width: 600px;
         margin: 40px auto;
         background: white;

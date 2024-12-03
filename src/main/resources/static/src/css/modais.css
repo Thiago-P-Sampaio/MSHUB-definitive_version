@@ -1,5 +1,6 @@
 /* Modal de Novo ALUNO */
 .modal {
+    font-family: 'Poppins', Extrabold;
     background-color: #fff; /* Fundo branco para o conteúdo do modal */
     padding: 20px 30px;
     border-radius: 10px; /* Cantos arredondados */
@@ -25,6 +26,8 @@
 
 /* Título do Modal */
 h2 {
+    font-family: cursive;
+    font-style: normal;
     font-size: 24px;
     margin-bottom: 10px;
 }
@@ -167,6 +170,7 @@ form {
 
 .input-field-edit input[type="text"],
 .input-field-edit input[type="email"] {
+    font-family: emoji;
     width: 100%;
     padding: 10px;
     margin-top: 5px;
@@ -189,6 +193,7 @@ form {
 
 /* Botão de envio */
 .submit-info-edit button {
+    font-family: math;
     background-color: #6a5acd;
     color: white;
     padding: 10px;
@@ -327,6 +332,8 @@ form {
 }
 
 .aluno-detalhe {
+    font-family: monospace;
+    font-style: oblique;
     font-size: 1rem;
     margin: 10px 0;
     padding: 5px 0;

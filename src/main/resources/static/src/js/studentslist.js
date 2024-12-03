@@ -1,9 +1,9 @@
-const apiurlget = 'https://apiteste01.azurewebsites.net/mshub/get';  // URL da API para pegar os dados
-const apiurlPut = 'https://apiteste01.azurewebsites.net/mshub/update';  // URL da API para pegar os dados
-const apiurlDell = 'https://apiteste01.azurewebsites.net/mshub/delete';  // URL da API para pegar os dados
-const apiurlimgPut = 'https://apiteste01.azurewebsites.net/image/updt';  // URL da API para pegar os dados
-const apiurlimgDell = 'https://apiteste01.azurewebsites.net/image/del';  // URL da API para pegar os dados
-const apiurlimgNew = 'https://apiteste01.azurewebsites.net/image/upload';  // URL da API para pegar os dados
+const apiurlget = 'https://mystudenthub.azurewebsites.net/mshub/get';  // URL da API para pegar os dados
+const apiurlPut = 'https://mystudenthub.azurewebsites.net/mshub/update';  // URL da API para pegar os dados
+const apiurlDell = 'https://mystudenthub.azurewebsites.net/mshub/delete';  // URL da API para pegar os dados
+const apiurlimgPut = 'https://mystudenthub.azurewebsites.net/image/updt';  // URL da API para pegar os dados
+const apiurlimgDell = 'https://mystudenthub.azurewebsites.net/image/del';  // URL da API para pegar os dados
+const apiurlimgNew = 'https://mystudenthub.azurewebsites.net/image/upload';  // URL da API para pegar os dados
 
 // Função para carregar os dados assim que a página for carregada
 window.onload = function() {
@@ -15,13 +15,13 @@ async function main() {
     try {
         // Fetch para pegar os dados da API
         const response = await fetch(apiurlget);
-        
+
         // Verifica se a resposta é bem-sucedida (status 200)
         if (!response.ok) {
             console.error('Erro ao buscar os dados:', response.status);
             return;
         }
-        
+
         // Converte a resposta em JSON
         const dados = await response.json();
 
@@ -38,15 +38,15 @@ async function main() {
 function renderAlunos(dados) {
     const tbody = document.getElementById('studentTableBody');
     tbody.innerHTML = ''; // Limpa a tabela antes de inserir os dados
-    
+
     // Loop para preencher cada linha da tabela com os dados dos alunos
     dados.forEach(aluno => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>
             <button type="button" id="alunoModal" style="all: unset; cursor: pointer" onclick="abrirModal('${aluno.id}')">
-                <img src="${aluno.imagURL || 'img/icon-default.png'}" alt="Foto" width="42" height="42" style="border-radius: 180px">
-            </button>   
+                <img src="${aluno.imagURL || 'src/img/icon-default.png'}" alt="Foto" width="42" height="42" style="border-radius: 180px">
+            </button>
             </td>
             <td>
                 <button type="button" class="bt" style="all: unset; cursor: pointer" onclick="abrirModal('${aluno.id}')">
@@ -59,13 +59,13 @@ function renderAlunos(dados) {
             <td>${aluno.responsavel}</td>
             <td>
                 <button class="b1-EditStudent" onclick="editarAluno('${aluno.id}')" style="all: unset; cursor: pointer" type="button">
-                <img src="img/editar.png" alt="editar"  >
+                <img src="src/img/editar.png" alt="editar"  >
                 </button>
                 <button onclick="deletarAluno('${aluno.id}')" style="all: unset; cursor: pointer" type="button" >
-                 <img src="img/excluir.png" alt="excluir"  >
+                 <img src="src/img/excluir (1).PNG" alt="excluir"  >
                 </button>
             </td>`;
-        
+
         tbody.appendChild(tr);
     });
 }
@@ -93,12 +93,12 @@ async function abrirModal(id) {
         // Preencher os detalhes do aluno no modal
         detalhesContainer.innerHTML = `
         <div class="aluno-photo-container">
-            <img 
-                src="${aluno.imagURL || 'img/icon-default.png'}"
-                alt="Foto do aluno" 
+            <img
+                src="${aluno.imagURL || 'src/img/icon-default.png'}"
+                alt="Foto do aluno"
                 class="aluno-photo">
         </div>
-        
+
         <div class="aluno-info">
             <p class="aluno-detalhe aluno-id">
                 <strong class="aluno-label">ID:</strong> ${aluno.id}
@@ -119,17 +119,17 @@ async function abrirModal(id) {
                 <strong class="aluno-label">Responsável:</strong> ${aluno.responsavel}
             </p>
         </div>
-        
+
         <div class="aluno-actions">
             <button class="b1-EditStudent aluno-btn-edit" onclick="editarAluno('${aluno.id}')" type="button">
-                <img src="img/Action 2.png" alt="editar" class="aluno-btn-icon">
+                <img src="src/img/Action 2.png" alt="editar" class="aluno-btn-icon">
             </button>
             <button class="b1-DeleteStudent aluno-btn-delete" onclick="deletarAluno('${aluno.id}')" type="button">
-                <img src="img/Action 3.png" alt="excluir" class="aluno-btn-icon">
+                <img src="src/img/Action 3.png" alt="excluir" class="aluno-btn-icon">
             </button>
         </div>
     `;
-    
+
 
         // Mostrar o modal
         modal.showModal();
@@ -146,7 +146,7 @@ document.getElementById("closeModal").addEventListener("click", () => {
     modal.close();
 });
 
-    
+
 
 async function editarAluno(id) {
     const modalEdit = document.getElementById("modal-Edit-Student");
@@ -208,7 +208,7 @@ async function editarAluno(id) {
 
             // Espera 500ms antes de enviar a imagem
             setTimeout(async () => {
-                
+
                 const file = document.getElementById("edit-imagem").files[0];  // Arquivo de imagem
                 if (file) {
                     const formData = new FormData();
@@ -230,7 +230,7 @@ async function editarAluno(id) {
             modalEdit.close();  // Fecha ambos os modais
             setTimeout(() => {
                 window.location.reload();
-            }, 1000); 
+            }, 1500);
         } catch (error) {
             console.error("Erro ao enviar dados:", error);
             modalConfirm.close();
@@ -290,7 +290,7 @@ async function deletarAluno(id) {
             modalConfirm.close(); // Fecha o modal de confirmação
             setTimeout(() => {
                 window.location.reload();
-            }, 500); //
+            }, 1500); //
         }
     });
 
@@ -299,3 +299,71 @@ async function deletarAluno(id) {
         modalConfirm.close(); // Apenas fecha o modal de confirmação
     });
 }
+
+async function buscarAluno() {
+    const nome = document.getElementById('nome-valor').value.trim(); // Captura o valor do input
+    const tbody = document.getElementById('studentTableBody'); // Corpo da tabela onde os dados são exibidos
+    const quant = document.getElementById('quant'); // Contador de resultados
+
+    // Limpa a tabela e o contador de resultados antes da busca
+    tbody.innerHTML = '';
+    quant.textContent = '';
+
+    if (!nome) {
+        quant.textContent = 'Digite um nome para buscar.';
+        return;
+    }
+
+    try {
+        // Chamada para a API de busca
+        const response = await fetch(`https://mystudenthub.azurewebsites.net/mshub/get/buscar?nome=${nome}`);
+        if (!response.ok) throw new Error('Erro na requisição');
+
+        const dados = await response.json();
+
+        if (dados.length === 0) {
+            quant.textContent = 'Nenhum aluno encontrado.';
+            return;
+        }
+
+        // Atualiza o contador com a quantidade de resultados encontrados
+        quant.textContent = `Resultados encontrados: ${dados.length}`;
+
+        // Renderiza os dados encontrados na tabela
+        renderAlunos(dados);
+    } catch (error) {
+        console.error('Erro ao buscar alunos:', error);
+        quant.textContent = 'Erro ao buscar alunos. Tente novamente.';
+    }
+}
+function resetarPesquisa() {
+    document.getElementById('nome-valor').value = ''; // Limpa o input
+    document.getElementById('quant').textContent = ''; // Limpa o contador
+    main(); // Recarrega todos os alunos
+    setTimeout(() => {
+        window.location.reload();
+    }, 500); //
+}
+
+fetch('https://mystudenthub.azurewebsites.net/mshub/get/count')
+  .then(response => response.text())  // Caso a resposta seja apenas texto
+  .then(data => {
+    console.log('Dados recebidos:', data);
+    
+    // Processa os dados recebidos
+    const alunos = processarDados(data);
+    console.log('Quantidade de alunos:', alunos);
+
+    // Exibe a quantidade de alunos em um elemento HTML com id "alunos-count"
+    document.getElementById("quant").innerHTML = `Quantidade: ${alunos}`;
+  })
+  .catch(error => {
+    console.error('Erro:', error);
+  });
+
+// Função para processar os dados
+function processarDados(dados) {
+  // Neste caso, estamos assumindo que o valor de `data` é uma string que representa um número
+  return dados; // Retorna diretamente o valor de `data` caso seja uma string com o número de alunos
+}
+
