@@ -33,10 +33,10 @@ build/
 ### VS Code ###
 .vscode/
 
-
-### ENV ###
+#####
 src/main/resources/.env
 src/main/resources/application.properties
+README.md
 
 
 

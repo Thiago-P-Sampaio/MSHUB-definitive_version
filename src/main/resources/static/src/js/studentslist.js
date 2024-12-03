@@ -15,13 +15,13 @@ async function main() {
     try {
         // Fetch para pegar os dados da API
         const response = await fetch(apiurlget);
-
+        
         // Verifica se a resposta é bem-sucedida (status 200)
         if (!response.ok) {
             console.error('Erro ao buscar os dados:', response.status);
             return;
         }
-
+        
         // Converte a resposta em JSON
         const dados = await response.json();
 
@@ -38,7 +38,7 @@ async function main() {
 function renderAlunos(dados) {
     const tbody = document.getElementById('studentTableBody');
     tbody.innerHTML = ''; // Limpa a tabela antes de inserir os dados
-
+    
     // Loop para preencher cada linha da tabela com os dados dos alunos
     dados.forEach(aluno => {
         const tr = document.createElement('tr');
@@ -46,7 +46,7 @@ function renderAlunos(dados) {
             <td>
             <button type="button" id="alunoModal" style="all: unset; cursor: pointer" onclick="abrirModal('${aluno.id}')">
                 <img src="${aluno.imagURL || 'src/img/icon-default.png'}" alt="Foto" width="42" height="42" style="border-radius: 180px">
-            </button>
+            </button>   
             </td>
             <td>
                 <button type="button" class="bt" style="all: unset; cursor: pointer" onclick="abrirModal('${aluno.id}')">
@@ -65,7 +65,7 @@ function renderAlunos(dados) {
                  <img src="src/img/excluir (1).PNG" alt="excluir"  >
                 </button>
             </td>`;
-
+        
         tbody.appendChild(tr);
     });
 }
@@ -93,12 +93,12 @@ async function abrirModal(id) {
         // Preencher os detalhes do aluno no modal
         detalhesContainer.innerHTML = `
         <div class="aluno-photo-container">
-            <img
-                src="${aluno.imagURL || 'src/img/icon-default.png'}"
-                alt="Foto do aluno"
+            <img 
+                src="${aluno.imagURL || 'src/img/icon-default.png'}" 
+                alt="Foto do aluno" 
                 class="aluno-photo">
         </div>
-
+        
         <div class="aluno-info">
             <p class="aluno-detalhe aluno-id">
                 <strong class="aluno-label">ID:</strong> ${aluno.id}
@@ -119,7 +119,7 @@ async function abrirModal(id) {
                 <strong class="aluno-label">Responsável:</strong> ${aluno.responsavel}
             </p>
         </div>
-
+        
         <div class="aluno-actions">
             <button class="b1-EditStudent aluno-btn-edit" onclick="editarAluno('${aluno.id}')" type="button">
                 <img src="src/img/Action 2.png" alt="editar" class="aluno-btn-icon">
@@ -129,7 +129,7 @@ async function abrirModal(id) {
             </button>
         </div>
     `;
-
+    
 
         // Mostrar o modal
         modal.showModal();
@@ -146,7 +146,70 @@ document.getElementById("closeModal").addEventListener("click", () => {
     modal.close();
 });
 
+    
 
+// Função para validar o nome (máximo de 60 caracteres)
+const validarNome = (nome) => {
+    if (nome && nome.length > 60) {  // Valida somente se o campo não estiver vazio
+        alert("O nome deve ter no máximo 60 caracteres.");
+        return false;
+    }
+    return true;
+};
+
+// Função para validar a matrícula (apenas números, 5 caracteres)
+const validarMatricula = (matricula) => {
+    if (matricula && !/^[0-9]{5}$/.test(matricula)) {  // Valida somente se o campo não estiver vazio
+        alert("A matrícula deve conter apenas 5 números.");
+        return false;
+    }
+    return true;
+};
+
+// Função para formatar o telefone durante a digitação
+const formatarTelefone = (telefone) => {
+    telefone = telefone.replace(/\D/g, ''); // Remove caracteres não numéricos
+    if (telefone.length <= 2) {
+        return `(${telefone}`;
+    } else if (telefone.length <= 6) {
+        return `(${telefone.substring(0, 2)}) ${telefone.substring(2)}`;
+    } else {
+        return `(${telefone.substring(0, 2)}) ${telefone.substring(2, 7)}-${telefone.substring(7, 11)}`;
+    }
+};
+
+// Função para validar o telefone (máximo de 11 dígitos)
+const validarTelefone = (telefone) => {
+    if (telefone && telefone.replace(/\D/g, '').length !== 11) {  // Valida somente se o campo não estiver vazio
+        alert("O telefone deve ter exatamente 11 dígitos.");
+        return false;
+    }
+    return true;
+};
+
+// Função para validar o e-mail (máximo de 150 caracteres)
+const validarEmail = (email) => {
+    if (email && email.length > 150) {  // Valida somente se o campo não estiver vazio
+        alert("O e-mail deve ter no máximo 150 caracteres.");
+        return false;
+    }
+    // Validação simples de formato de e-mail
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (email && !emailRegex.test(email)) {  // Só valida se o e-mail não estiver vazio
+        alert("Por favor, insira um e-mail válido.");
+        return false;
+    }
+    return true;
+};
+
+// Função para validar o responsável (máximo de 60 caracteres)
+const validarResponsavel = (responsavel) => {
+    if (responsavel && responsavel.length > 60) {  // Valida somente se o campo não estiver vazio
+        alert("O nome do responsável deve ter no máximo 60 caracteres.");
+        return false;
+    }
+    return true;
+};
 
 async function editarAluno(id) {
     const modalEdit = document.getElementById("modal-Edit-Student");
@@ -165,6 +228,28 @@ async function editarAluno(id) {
     // Evento de submit do formulário
     editForm.addEventListener("submit", (event) => {
         event.preventDefault();  // Impede o envio tradicional do formulário
+
+        // Pega os dados do formulário
+        const Inome = document.getElementById("edit-nome").value.trim();
+        const Itelefone = document.getElementById("edit-telefone").value.trim();
+        const Imatricula = document.getElementById("edit-rm").value.trim();
+        const Iemail = document.getElementById("edit-email").value.trim();
+        const Iresponsavel = document.getElementById("edit-responsavel").value.trim();
+
+        // Valida os campos obrigatórios
+        if (
+            !validarNome(Inome) ||
+            !validarMatricula(Imatricula) ||
+            !validarTelefone(Itelefone) ||
+            !validarResponsavel(Iresponsavel)
+        ) {
+            return; // Se algum campo for inválido, não envia o formulário
+        }
+
+        // Se o campo de e-mail não foi alterado, não valida o e-mail
+        if (Iemail && !validarEmail(Iemail)) {
+            return; // Se o e-mail for inválido, não envia o formulário
+        }
 
         // Exibe o modal de confirmação
         modalConfirm.showModal();
@@ -208,7 +293,6 @@ async function editarAluno(id) {
 
             // Espera 500ms antes de enviar a imagem
             setTimeout(async () => {
-
                 const file = document.getElementById("edit-imagem").files[0];  // Arquivo de imagem
                 if (file) {
                     const formData = new FormData();
@@ -230,7 +314,7 @@ async function editarAluno(id) {
             modalEdit.close();  // Fecha ambos os modais
             setTimeout(() => {
                 window.location.reload();
-            }, 1500);
+            }, 1500); 
         } catch (error) {
             console.error("Erro ao enviar dados:", error);
             modalConfirm.close();
@@ -243,6 +327,12 @@ async function editarAluno(id) {
         modalEdit.showModal();  // Reabre o modal de edição
     });
 }
+
+// Evento de formatação automática do telefone no modal de edição
+document.getElementById("edit-telefone").addEventListener("input", (e) => {
+    e.target.value = formatarTelefone(e.target.value);
+});
+
 
 
 

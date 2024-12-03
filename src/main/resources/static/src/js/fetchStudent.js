@@ -7,7 +7,7 @@ const Itelefone = document.getElementById("telefone");
 const Ifoto = document.getElementById("imagem");
 
 // Função para limpar os campos do formulário
-const clearFormFields = () => {
+const limparCamposFormulario = () => {
     Inome.value = "";
     Irm.value = "";
     Iresponsavel.value = "";
@@ -17,7 +17,7 @@ const clearFormFields = () => {
 };
 
 // Função para validar o nome (máximo de 60 caracteres)
-const validarNome = (nome) => {
+const validarNomeAluno = (nome) => {
     if (nome.length > 60) {
         alert("O nome deve ter no máximo 60 caracteres.");
         return false;
@@ -26,7 +26,7 @@ const validarNome = (nome) => {
 };
 
 // Função para validar a matrícula (apenas números, 5 caracteres)
-const validarMatricula = (matricula) => {
+const validarMatriculaAluno = (matricula) => {
     const matriculaRegex = /^[0-9]{5}$/;
     if (!matriculaRegex.test(matricula)) {
         alert("A matrícula deve conter apenas 5 números.");
@@ -36,7 +36,7 @@ const validarMatricula = (matricula) => {
 };
 
 // Função para formatar o telefone durante a digitação
-const formatarTelefone = (telefone) => {
+const formatarTelefoneAluno = (telefone) => {
     telefone = telefone.replace(/\D/g, ''); // Remove caracteres não numéricos
     if (telefone.length <= 2) {
         return `(${telefone}`;
@@ -48,8 +48,8 @@ const formatarTelefone = (telefone) => {
 };
 
 // Função para validar o telefone (máximo de 11 dígitos)
-const validarTelefone = (telefone) => {
-    const telefoneFormatado = formatarTelefone(telefone);
+const validarTelefoneAluno = (telefone) => {
+    const telefoneFormatado = formatarTelefoneAluno(telefone);
     if (telefone.replace(/\D/g, '').length !== 11) {
         alert("O telefone deve ter exatamente 11 dígitos.");
         return false;
@@ -59,7 +59,7 @@ const validarTelefone = (telefone) => {
 };
 
 // Função para validar o e-mail (máximo de 150 caracteres)
-const validarEmail = (email) => {
+const validarEmailAluno = (email) => {
     if (email.length > 150) {
         alert("O e-mail deve ter no máximo 150 caracteres.");
         return false;
@@ -74,7 +74,7 @@ const validarEmail = (email) => {
 };
 
 // Função para validar o responsável (máximo de 60 caracteres)
-const validarResponsavel = (responsavel) => {
+const validarResponsavelAluno = (responsavel) => {
     if (responsavel.length > 60) {
         alert("O nome do responsável deve ter no máximo 60 caracteres.");
         return false;
@@ -88,11 +88,11 @@ formulario.addEventListener("submit", async (event) => {
 
     // Valida os campos antes de enviar
     if (
-        !validarNome(Inome.value) ||
-        !validarMatricula(Irm.value) ||
-        !validarTelefone(Itelefone.value) ||
-        !validarEmail(Iemail.value) ||
-        !validarResponsavel(Iresponsavel.value)
+        !validarNomeAluno(Inome.value) ||
+        !validarMatriculaAluno(Irm.value) ||
+        !validarTelefoneAluno(Itelefone.value) ||
+        !validarEmailAluno(Iemail.value) ||
+        !validarResponsavelAluno(Iresponsavel.value)
     ) {
         return; // Se algum campo for inválido, não envia o formulário
     }
@@ -132,7 +132,7 @@ formulario.addEventListener("submit", async (event) => {
         alert("Erro ao cadastrar aluno. Por favor, tente novamente.");
     } finally {
         // Limpar os campos do formulário
-        clearFormFields();
+        limparCamposFormulario();
         // Fechar o modal
         modalRegister.close();
         window.location.reload(); // Atualiza a página
@@ -142,5 +142,5 @@ formulario.addEventListener("submit", async (event) => {
 // Evento de formatação automática do telefone
 Itelefone.addEventListener("input", (e) => {
     console.log("Formatação chamada"); // Adiciona um log para depuração
-    e.target.value = formatarTelefone(e.target.value);
+    e.target.value = formatarTelefoneAluno(e.target.value);
 });
