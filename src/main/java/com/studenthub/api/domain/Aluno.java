@@ -1,6 +1,7 @@
 package com.studenthub.api.domain;
 
 import com.studenthub.api.dto.AlunoDTO;
+import com.studenthub.api.dto.PutAlunoDTO;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -17,13 +18,19 @@ public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    @Column(nullable = false)
     private String nome;
+    @Column(unique = true, nullable = false)
     private String email;
+    @Column(unique = true, nullable = false)
     private String telefone;
+    @Column(unique = true, nullable = false)
     private int matricula;
+    @Column(unique = true, nullable = false)
     private String responsavel;
+    @Column(unique = true)
     private String ImagURL;
-    @Column(name = "timestamp_register",columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "timestamp_register")
     private OffsetDateTime dateTime;
 
 
@@ -52,10 +59,18 @@ public class Aluno {
         this.responsavel = dto.responsavel();
     }
 
+    public Aluno(PutAlunoDTO pdto) {
+        this.nome = pdto.nome();
+        this.email = pdto.email();
+        this.telefone = pdto.telefone();
+        this.matricula = pdto.matricula();
+        this.responsavel = pdto.responsavel();
+    }
+
     @PrePersist
     public void prePersist() {
         if (this.dateTime == null) {
-            this.dateTime = OffsetDateTime.now(ZoneOffset.of("-03:00"));
+            this.dateTime =OffsetDateTime.now(ZoneOffset.UTC).withOffsetSameInstant(ZoneOffset.of("-03:00"));
         }
     }
 

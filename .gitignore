@@ -33,8 +33,10 @@ build/
 ### VS Code ###
 .vscode/
 
-q
-### APPLICATION PROPERTIES ###
+#####
+src/main/resources/.env
 src/main/resources/application.properties
+README.md
+
 
 

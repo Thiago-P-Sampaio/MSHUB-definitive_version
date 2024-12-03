@@ -3,10 +3,12 @@ package com.studenthub.api.repository;
 import com.studenthub.api.domain.Aluno;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.hibernate.annotations.processing.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,4 +18,10 @@ public interface AlunoRepository extends JpaRepository<Aluno, UUID> {
 
     @Query(value = "SELECT * FROM aluno ORDER BY timestamp_register DESC LIMIT 1;", nativeQuery = true)
     Aluno findLastStudent();
+
+    @Query(value = "SELECT * FROM quant_alunos;", nativeQuery = true)
+    String quntStudent();
+
+    @Query(value = "CALL buscar_aluno(:nome);", nativeQuery = true)
+    List<Aluno> buscarAlunoPorNome(@Param("nome") String nome);
 }
