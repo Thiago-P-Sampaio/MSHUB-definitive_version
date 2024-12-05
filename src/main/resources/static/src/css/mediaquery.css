@@ -1,42 +1,220 @@
+/* Responsividade */
 
-
-/* Media Query para Tablets (768px a 992px) */
-@media (max-width: 992px) and (min-width: 768px) {
-    body {
-        background-color: #e0e0e0; /* Cor de fundo diferente para tablets */
+/* Para dispositivos móveis (largura até 600px) */
+@media (max-width: 600px) {
+    .header {
+      flex-direction: column;
+      text-align: center;
     }
-
-    header {
-        font-size: 1.5rem; /* Tamanho da fonte do cabeçalho para tablets */
+  
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
     }
-
+  
     .container {
-        padding: 15px; /* Ajuste de padding para tablets */
+      padding: 10px;
+      margin: 10px;
     }
-
-    nav li {
-        font-size: 1.1rem; /* Tamanho da fonte dos itens de navegação para tablets */
+  
+    .title-row {
+      flex-direction: column;
+      gap: 10px;
+      text-align: center;
     }
-}
-
-/* Media Query para Celulares (até 768px) */
-@media (max-width: 768px) {
-    body {
-        background-color: #d0d0d0; /* Cor de fundo diferente para celulares */
+  
+    .students-table {
+      font-size: 12px;
+      display: block;
+      width: 100%;
+      margin: 0 auto;
     }
-
-    header {
-        font-size: 1.2rem; /* Tamanho da fonte do cabeçalho para celulares */
-        text-align: center; /* Centraliza o texto do cabeçalho em celulares */
+  
+    .students-table thead {
+      display: none; /* Oculta o cabeçalho */
     }
-
+  
+    .students-table tr {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      max-width: 80%;
+      margin: 10px auto; /* Centraliza os cartões */
+    }
+  
+    .students-table tbody {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Centraliza os cartões */
+      gap: 10px;
+    }
+  
+    .students-table td {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 8px 0;
+    }
+  
+    .students-table td::before {
+      content: none; /* Remove os rótulos */
+    }
+  
+    .new-button {
+      width: 100%;
+    }
+  
+    dialog {
+      width: 90%;
+    }
+  
+    .busca-alunos-form {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+ 
+    .botao-buscar,
+    .botao-resetar {
+      width: 100%; /* Garantindo tamanho consistente */
+    }
+    .campo-nome{
+       max-width: 377.5px;
+       width: 377.5px;
+        width: 94%
+    }
+  }
+  
+  /* Para tablets (largura entre 601px e 1024px) */
+  @media (min-width: 601px) and (max-width: 1024px) {
+    .header {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+  
     .container {
-        padding: 10px; /* Ajuste de padding para celulares */
+      max-width: 90%;
+      margin: 20px auto;
     }
-
-    nav li {
-        display: block; /* Exibe os itens de navegação como blocos em celulares */
-        margin-bottom: 10px; /* Adiciona espaçamento entre os itens de navegação */
+  
+    .students-table {
+      font-size: 14px;
+      display: block;
+      width: 100%;
+      margin: 0 auto;
     }
-}
-
+  
+    .students-table thead {
+      display: none; /* Oculta o cabeçalho */
+    }
+  
+    .students-table tr {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      max-width: 80%;
+      margin: 10px auto;
+    }
+  
+    .students-table tbody {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+  
+    dialog {
+      width: 80%;
+    }
+  
+    .busca-alunos-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .campo-nome,
+    .botao-buscar,
+    .botao-resetar {
+      width: 100%; /* Consistência no tamanho */
+    }
+  }
+  
+  /* Para telas maiores (acima de 1024px) */
+  @media (min-width: 1025px) {
+    .header {
+      justify-content: space-between;
+    }
+  
+    .container {
+      max-width: 1100px;
+    }
+  
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+  
+    .title-row h2 {
+      flex: 1; /* Mantém o título no início */
+      text-align: left;
+    }
+  
+    .quant1 {
+      flex: 1; /* Mantém a quantidade no centro */
+      text-align: start;
+    }
+  
+    .new-button {
+      text-align: right;
+    }
+  
+    .students-table {
+      font-size: 16px;
+      width: 100%;
+      table-layout: auto;
+    }
+  
+    .students-table thead {
+      display: table-header-group; /* Exibe o cabeçalho */
+    }
+  
+    .students-table tbody {
+      display: table-row-group;
+    }
+  
+    dialog {
+      width: 40%;
+    }
+  
+    .busca-alunos-form {
+      display: flex;
+      justify-content: space-between; /* Alinhamento horizontal */
+      gap: 10px;
+    }
+  
+    .campo-nome {
+      max-width: 500px; /* Tamanho máximo */
+      width: 96%; /* Evita que o input exceda o box */
+    
+    }
+  
+    .botao-buscar,
+    .botao-resetar {
+      width: auto; /* Botões se ajustam ao conteúdo */
+    }
+  }
+  
