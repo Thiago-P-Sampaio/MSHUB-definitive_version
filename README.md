@@ -88,8 +88,13 @@ CLOUDINARY_API_SECRET=${CLOUD_NAME_SECRET}
 Para o upload de imagens, busquei utilizar um serviço de hospedagem gratuita, e encontrei a [**Cloudnary**](https://cloudinary.com/), por isso precisamos definir as configurações da API desse serviço cloud para prosseguir com nossas operações se quisermos salvar as imagens dos alunos.
 
 
-### Documentação da API
+### Documentação da API 
+###
+```http
+ localhost:8080
 
+```
+###
 #### Retorna todos os itens
 
 ```
@@ -264,3 +269,9 @@ O deploy tanto do Back-End quanto do Front-End foi feito através do serviço da
  >1. Alterar o `localhost:8080` pela URL do serviço para Deploy
  >2. Troque `http` por **`https`**
  >3. Certifique-se que foi passado as credenciais do banco em nuvem;
+
+###
+## Responsividade para dispositivos móveis!
+<div align="center">
+<img src="https://github.com/Thiago-P-Sampaio/MSHUB-definitive_version/blob/test_frontBack/new_resources/student.gif" >
+</div>
