@@ -1,9 +1,9 @@
-const apiurlget = 'https://mystudenthub.azurewebsites.net/mshub/get';  // URL da API para pegar os dados
-const apiurlPut = 'https://mystudenthub.azurewebsites.net/mshub/update';  // URL da API para pegar os dados
-const apiurlDell = 'https://mystudenthub.azurewebsites.net/mshub/delete';  // URL da API para pegar os dados
-const apiurlimgPut = 'https://mystudenthub.azurewebsites.net/image/updt';  // URL da API para pegar os dados
-const apiurlimgDell = 'https://mystudenthub.azurewebsites.net/image/del';  // URL da API para pegar os dados
-const apiurlimgNew = 'https://mystudenthub.azurewebsites.net/image/upload';  // URL da API para pegar os dados
+const apiurlget = 'https://mshub.azurewebsites.net/mshub/get';  // URL da API para pegar os dados
+const apiurlPut = 'https://mshub.azurewebsites.net/mshub/update';  // URL da API para pegar os dados
+const apiurlDell = 'https://mshub.azurewebsites.net/mshub/delete';  // URL da API para pegar os dados
+const apiurlimgPut = 'https://mshub.azurewebsites.net/image/updt';  // URL da API para pegar os dados
+const apiurlimgDell = 'https://mshub.azurewebsites.net/image/del';  // URL da API para pegar os dados
+const apiurlimgNew = 'https://mshub.azurewebsites.net/image/upload';  // URL da API para pegar os dados
 
 // Função para carregar os dados assim que a página for carregada
 window.onload = function() {
@@ -406,7 +406,7 @@ async function buscarAluno() {
 
     try {
         // Chamada para a API de busca
-        const response = await fetch(`https://mystudenthub.azurewebsites.net/mshub/get/buscar?nome=${nome}`);
+        const response = await fetch(`https://mshub.azurewebsites.net/mshub/get/buscar?nome=${nome}`);
         if (!response.ok) throw new Error('Erro na requisição');
 
         const dados = await response.json();
@@ -435,7 +435,7 @@ function resetarPesquisa() {
     }, 500); //
 }
 
-fetch('https://mystudenthub.azurewebsites.net/mshub/get/count')
+fetch('https://mshub.azurewebsites.net/mshub/get/count')
   .then(response => response.text())  // Caso a resposta seja apenas texto
   .then(data => {
     console.log('Dados recebidos:', data);

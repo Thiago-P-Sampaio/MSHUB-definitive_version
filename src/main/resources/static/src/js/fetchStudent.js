@@ -114,7 +114,7 @@ formulario.addEventListener("submit", async (event) => {
         }
 
         // Envia os dados do formulário (incluindo a imagem) para o servidor
-        const response = await fetch("https://mystudenthub.azurewebsites.net/mshub/new", {
+        const response = await fetch("https://mshub.azurewebsites.net/mshub/new", {
             method: "POST",
             body: formData,
         });
